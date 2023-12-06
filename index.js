@@ -80,16 +80,16 @@ const choices = profiles.map((p) => ({
 }))
 
 choices.unshift({
-    title: 'default',
-    value: ''
+    title: 'none',
+    value: ' '
 })
 
 const response = await prompts({
     type: 'autocomplete',
     limit: 20,
     name: 'value',
-    message: 'AWS Profile',
-    initial: AWS_PROFILE,
+    message: 'Set AWS Profile',
+    initial: AWS_PROFILE ?? '',
     choices,
     suggest
 });
