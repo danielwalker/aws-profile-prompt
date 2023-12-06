@@ -94,4 +94,4 @@ const response = await prompts({
     suggest
 });
 
-await fs.writeFileSync(`${HOME}/.awsp`, `export AWS_PROFILE=${response.value}\n`)
+await fs.writeFileSync(`${HOME}/.awsp`, `export AWS_PROFILE=${response.value ?? ''}\n`)
