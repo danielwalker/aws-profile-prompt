@@ -2,7 +2,7 @@
 
 Allows easy management of many AWS Profiles with type-ahead search.
 
-![](/Users/Dan/Workspace/aws-profile-prompt/recording.gif)
+![Demo](recording.gif)
 
 # Installation
 
