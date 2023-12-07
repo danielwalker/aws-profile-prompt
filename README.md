@@ -1,6 +1,6 @@
-# AWS Profile Manager
+# AWS Profile Prompt
 
-Allows easy management of many AWS Profiles with type-ahead search.
+Allows easy management of AWS Profiles with search.
 
 ![Demo](recording.gif)
 
@@ -35,7 +35,7 @@ PROMPT='${ret_status} %{$fg[cyan]%}%c%{$reset_color%} $(aws_prof)$(git_prompt_in
 
 ## Profile Configuration
 
-**Note**: This section is only relevant if you're new to AWS Profiles. 
+**Note**: This section is only relevant if you are new to AWS Profiles. 
 
 AWS Profiles are created in `~/.aws/credentials`.
 
@@ -58,7 +58,7 @@ In this example, my `~/.aws/credentials` would contain:
 # Profile name
 [a.au.prod]
 
-# The role that you're assuming. The role specified when creating the sub-account will work.
+# The role that you are assuming. The role specified when creating the sub-account will work.
 role_arn = arn:aws:iam::[sub-account-id]:role/OrganizationAccountAccessRole
 
 # The default region for the profile.
@@ -70,16 +70,16 @@ source_profile = a
 
 You can switch between profiles by setting the AWS_PROFILE environment variable to the name of the profile. 
 
-## Issues with AWS SDK V3
+## Using Profiles with the AWS Javascript SDK V3
 
 It is possible to split AWS configuration into 'credentials' and 'config'. 
 
 - `~/.aws/credentials` stores profiles with an access key and secret (e.g. '[a]')
 - `~/.aws/config` stores profiles with a source_profile (e.g. '[a.au.prod]')
 
-This works fine with the AWS CLI, but it does not work with V3 of the Javascript SDK. All profiles **MUST** be defined 
-in `~/.aws/credentials`. Otherwise, the current version of the AWS SDK will fail to find the profile 
+This works fine with the AWS CLI, but it does not work with V3 of the Javascript SDK right now. All profiles **MUST** 
+be defined in `~/.aws/credentials`. Otherwise, the current version of the AWS SDK will fail to find the profile 
 (Yes, even if AWS_SDK_LOAD_CONFIG is set).  
 
-This is the primary reason that this package was created. Other profile switches would use `~/.aws/config` to source 
-profile configuration which made them useless when used alongside the SDK.
+This is the primary motivation behind this package. Other profile switches use `~/.aws/config` to source profile 
+configuration which make them useless when used alongside the V3 SDK.

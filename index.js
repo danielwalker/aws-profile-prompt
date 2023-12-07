@@ -2,7 +2,16 @@
 
 import fs from 'fs'
 import prompts from 'prompts'
-import chalk from 'chalk'
+
+const NONE_VALUE = 'awsp.none'
+
+const HOME = process.env['HOME'];
+
+const AWS_PROFILE = process.env['AWS_PROFILE'];
+
+if (!HOME) {
+    console.log("Error: HOME is not set. Please set a HOME environment variable.");
+}
 
 /**
  * Suggests profiles based on input.
@@ -49,49 +58,59 @@ const readFileAsString = async (path) => {
     return ""
 }
 
-const HOME = process.env['HOME'];
-
-const AWS_PROFILE = process.env['AWS_PROFILE'];
-
-if (!HOME) {
-    console.err("HOME is not set. Please set a HOME environment variable.");
+/**
+ * Returns the content of the .awsp file that will be sourced to set the environment variable. This will either set
+ * AWS_PROFILE or remove it.
+ */
+const makeExport = (value) => {
+    if (value === NONE_VALUE) {
+        return 'unset AWS_PROFILE'
+    } else {
+        return `export AWS_PROFILE=${value}`
+    }
 }
 
+
+// Read and merge .aws credentials and config.
 const credentials = await readFileAsString(`${HOME}/.aws/credentials`);
-
 const config = await readFileAsString(`${HOME}/.aws/config`);
-
 const merged = credentials + '\n' + config;
 
+// Validate that we have config.
 if (merged.trim() === '') {
-    console.log(chalk.red("There is no AWS config in ~/.aws"));
+    console.log("Error: Did not find ~/.aws/config or ~/.aws/credentials");
     process.exit(1);
 }
 
+// Find all profiles in the config.
 const profiles = findProfiles(merged)
 
+// Validate that we have profiles.
 if (!profiles.length) {
-    console.log(chalk.red("There are no AWS profiles in ~/.aws"));
+    console.log("Error: Could not find any AWS profile configuration in ~/.aws");
     process.exit(1);
 }
 
+// Build the array of profile choices.
 const choices = profiles.map((p) => ({
     title: p
 }))
 
+// Add the [none] choice.
 choices.unshift({
-    title: 'none',
-    value: ' '
+    title: '[none]',
+    value: NONE_VALUE,
 })
 
+// Display the prompt.
 const response = await prompts({
     type: 'autocomplete',
     limit: 20,
     name: 'value',
-    message: 'Set AWS Profile',
-    initial: AWS_PROFILE ?? '',
+    message: 'aws profile',
+    initial: AWS_PROFILE ?? NONE_VALUE,
     choices,
     suggest
 });
 
-await fs.writeFileSync(`${HOME}/.awsp`, `export AWS_PROFILE=${response.value ?? ''}\n`)
+await fs.writeFileSync(`${HOME}/.awsp`, makeExport(response.value))

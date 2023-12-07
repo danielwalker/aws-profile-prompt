@@ -1,6 +1,6 @@
 {
   "name": "aws-profile-prompt",
-  "version": "0.9.6",
+  "version": "0.10.0",
   "main": "index.js",
   "author": "daniel.walker@gmail.com",
   "license": "MIT",
@@ -9,15 +9,11 @@
     "type": "git",
     "url": "https://github.com/danielwalker/aws-profile-prompt"
   },
-  "scripts": {
-    "postinstall": "./postinstall.sh"
-  },
   "bin": {
     "_awsp_prompt": "./index.js",
     "_awsp": "./run.sh"
   },
   "dependencies": {
-    "chalk": "^5.3.0",
     "prompts": "^2.4.2"
   }
 }
