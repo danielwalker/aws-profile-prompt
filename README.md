@@ -16,6 +16,15 @@ environment variable is exported correctly.
 alias awsp="source _awsp"
 ```
 
+## Usage
+
+```shell
+awsp
+
+# Or, to default the filter (e.g. To list the environments containing "prod"): 
+awsp prod
+```
+
 ## ZSH Prompt
 
 In the recording, my zsh prompt shows the active AWS Profile. My `.zshrc` is as follows:

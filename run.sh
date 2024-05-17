@@ -1,5 +1,5 @@
 #!/bin/sh
 
-_awsp_prompt
+_awsp_prompt $@
 
 source ~/.awsp
